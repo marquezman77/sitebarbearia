@@ -1,0 +1,658 @@
+<!DOCTYPE html><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LATAVELHA BARBEARIA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #ff0000;
+            --dark: #1a1a1a;
+            --darker: #000000;
+            --light: #002394;
+            --gray: #b60101;       
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: rgb(21, 20, 27);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVBAR ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(212, 168, 83, 0.2);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: var(--light);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+            text-transform: uppercase;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 50%, #2a1a0a 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4a853' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--light);
+            text-shadow: 2px 2px 20px rgba(0,0,0,0.5);
+        }
+
+        .hero h1 span {
+            color: var(--gold);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--gray);
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 50px;
+            background: var(--gold);
+            color: var(--darker);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 2px solid var(--gold);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: transparent;
+            color: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 168, 83, 0.3);
+        }
+
+        /* ===== SCROLL ANIMATIONS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            padding: 100px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--gold);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray);
+            font-size: 1.1rem;
+            margin-bottom: 60px;
+            letter-spacing: 2px;
+        }
+
+        /* ===== SERVIÇOS ===== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: linear-gradient(145deg, var(--dark) 0%, #252525 100%);
+            border: 1px solid rgba(212, 168, 83, 0.15);
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 168, 83, 0.05), transparent);
+            transition: left 0.5s;
+        }
+
+        .service-card:hover::before {
+            left: 100%;
+        }
+
+        .service-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+
+        .service-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .price span {
+            font-size: 1rem;
+            color: var(--gray);
+            font-weight: 400;
+        }
+
+        /* ===== HORÁRIOS ===== */
+        .hours-section {
+            background: linear-gradient(145deg, var(--dark) 0%, #1f1f1f 100%);
+            border: 1px solid rgba(212, 168, 83, 0.1);
+            padding: 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hours-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .hours-grid {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .hours-block {
+            padding: 30px 50px;
+            background: rgba(212, 168, 83, 0.05);
+            border: 1px solid rgba(212, 168, 83, 0.2);
+            min-width: 280px;
+        }
+
+        .hours-block h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .hours-block .time {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--light);
+            letter-spacing: 1px;
+        }
+
+        .hours-block .days {
+            color: var(--gray);
+            margin-top: 8px;
+            font-size: 0.95rem;
+        }
+
+        /* ===== GALERIA ===== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(212, 168, 83, 0.1);
+            transition: all 0.4s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-item:hover {
+            border-color: var(--gold);
+            transform: scale(1.02);
+        }
+
+        .gallery-item .placeholder-text {
+            color: var(--gray);
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* ===== CONTATO ===== */
+        .contact-section {
+            text-align: center;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .contact-item .icon {
+            width: 60px;
+            height: 60px;
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--gold);
+            transition: all 0.3s;
+        }
+
+        .contact-item:hover .icon {
+            background: var(--gold);
+            color: var(--darker);
+        }
+
+        .contact-item p {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--dark);
+            padding: 40px 60px;
+            text-align: center;
+            border-top: 1px solid rgba(212, 168, 83, 0.1);
+        }
+
+        footer p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        footer .logo {
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            nav {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            section {
+                padding: 60px 20px;
+            }
+
+            .hours-grid {
+                gap: 20px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* ===== FLOATING PARTICLES ===== */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <head>
+        <a href="#">
+            <img src="logo.png" alt="c:\Users\netyn\OneDrive\Desktop\logo.latavelha.png" width="120">
+        </a>
+        
+
+    </head>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">LATAVELHA <span>BARBEARIA</span></div>
+        <ul class="nav-links">
+            <li><a href="#inicio">Início</a></li>
+            <li><a href="#servicos">Serviços</a></li>
+            <li><a href="#horarios">Horários</a></li>
+            <li><a href="#galeria">Galeria</a></li>
+            <li><a href="#contato">Contato</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="inicio">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 9s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 12s;"></div>
+        <div class="hero-content">
+            <h1>LATAVELHA <span> BARBEARIA</span></h1>  
+            <p>Mais que um corte, uma experiência de estilo que você merece<p>
+            <a href="#servicos" class="btn">Ver Serviços</a>
+        </div>
+    </section>
+
+    <!-- SERVIÇOS -->
+    <section id="servicos">
+        <h2 class="section-title reveal">Nossos Serviços</h2>
+        <p class="section-subtitle reveal">Qualidade e precisão em cada corte</p>
+
+        <div class="services-grid">
+            <div class="service-card reveal">
+                <div class="service-icon">✂️</div>
+                <h3>Corte de Cabelo</h3>
+                <p>Corte masculino com estilo e finalização.</p>
+                <div class="price">R$ 30,00 <span>/ corte</span></div>
+            </div>
+
+            <div class="service-card reveal">
+                <div class="service-icon">🧔</div>
+                <h3>Barba</h3>
+                <p>Modelagem completa da barba com navalha.</p>
+                <div class="price">R$ 15,00 <span>/ serviço</span></div>
+            </div>
+
+            <div class="service-card reveal">
+                <div class="service-icon">✂️</div>
+                <h3>Corte + Barba</h3>
+                <p>Combo completo com corte de cabelo e modelagem de barba. O pacote ideal para o homem moderno.</p>
+                <div class="price">R$ 40,00 <span>/ combo</span></div>
+            </div>
+
+            <div class="service-card reveal">
+                <div class="service-icon">💡</div>
+                <h3>Luzes</h3>
+                <p>Mechas e luzes para dar destaque ao seu visual. Técnica profissional com produtos de qualidade.</p>
+                <div class="price">R$ 35,00 <span>/ serviço</span></div>
+            </div>
+
+            <div class="service-card reveal">
+                <div class="service-icon">⚪</div>
+                <h3>Platinado</h3>
+                <p>Descoloração completa para um visual ousado e moderno. Inclui tratamento pós-coloração.</p>
+                <div class="price">R$ 50,00 <span>/ serviço</span></div>
+            </div>
+
+           
+        </div>
+    </section>
+
+    <!-- HORÁRIOS -->    <section id="horarios">
+        <h2 class="section-title reveal">Horário de Funcionamento</h2>
+        <p class="section-subtitle reveal">Estamos prontos para te atender</p>
+
+        <div class="hours-section reveal">
+            <div class="hours-grid">
+                <div class="hours-block">
+                    <h4>Segunda a Sexta</h4>
+                    <div class="time">08:30 — 19:00</div>
+                    <div class="days">De segunda-feira a sexta-feira</div>
+                </div>
+                <div class="hours-block">
+                    <h4>Sábados</h4>
+                    <div class="time">08:30 — 19:00</div>
+                    <div class="days">Aos sábados</div>
+                </div>
+                <div class="hours-block">
+                    <h4>Domingos</h4>
+                    <div class="time">FECHADO</div>
+                    <div class="days">Descanso Semanal</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERIA -->
+    <section id="galeria">
+        <h2 class="section-title reveal">Galeria</h2>
+        <p class="section-subtitle reveal">Inspire-se nos nossos trabalhos</p>
+
+        <div class="gallery-grid reveal">
+            <div class="gallery-item">
+                <div class="placeholder-text">💈 Corte Clássico</div>
+               
+            </div>
+            <div class="gallery-item">
+                <div class="placeholder-text">🧔 Barba Perfeita</div>
+            </div>
+            <div class="gallery-item">
+                <div class="placeholder-text">💡 Luzes Modernas</div>
+            </div>
+            <div class="gallery-item">
+                <div class="placeholder-text">⚪ Platinado</div>
+            </div>
+        
+        
+          
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTATO -->
+    <section id="contato" class="contact-section">
+        <h2 class="section-title reveal">Entre em Contato</h2>
+        <p class="section-subtitle reveal">Agende seu horário e venha nos conhecer</p>
+
+        <div class="contact-info reveal">
+            <div class="contact-item">
+                <div class="icon">📍</div>
+                <p>Rua Dona Maria Augusta Nogueira, 123<br>Recife - Bongi</p>
+            </div>
+            <div class="contact-item">
+                <div class="icon">📞</div>
+                <p>(81) 9 81515056<br>WhatsApp</p>
+            </div>
+            <div class="contact-item">
+                <div class="icon">📧</div>
+                <p>barbearialatavelha@gmail.com<br>Envie uma mensagem</p>
+            </div>
+            <div class="contact-item">
+                <div class="icon">📱</div>
+                <p>latavelha_barbearia<br>Instagram</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="logo">LATAVELHA <span>BARBEARIA</span></div>
+        <p>© 2026 LATAVELHA BARBEARIA.</p>
+        <p style="margin-top: 10px; font-size: 0.8rem;">Desde 2020💈</p>
+    </footer>
+
+    <script>
+        // Scroll Reveal Animation
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealOnScroll = () => {
+            revealElements.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const revealPoint = 150;
+
+                if (elementTop < windowHeight - revealPoint) {
+                    element.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar background on scroll
+        const navbar = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+        });
+    </script>
+    
+
+</body>
+</html>
