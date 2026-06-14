@@ -153,38 +153,64 @@
   <!-- GALERIA -->
   <section class="section-wrap alt" id="galeria">
     <div class="container">
-      <span class="section-label reveal">Nosso ambiente</span>
+      <span class="section-label reveal">Nosso portfólio</span>
       <h2 class="section-title reveal">Galeria</h2>
       <div class="ornament reveal">◆</div>
 
-      <div class="gallery-grid reveal">
-        <div class="gallery-item">
-          <img src="images/barbershop01.jpg" alt="Serviço de barba">
+      <!-- Filtros por Categoria -->
+      <div class="gallery-filters reveal" id="gallery-filters">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="adulto">Corte & Barba</button>
+        <button class="filter-btn" data-filter="kids">Barber Kids</button>
+      </div>
+
+      <div class="gallery-grid reveal" id="gallery-grid">
+        <div class="gallery-item" data-category="kids">
+          <img src="images/image01.png" alt="Corte infantil — bebê com corte social clássico" loading="lazy">
           <div class="gallery-item-overlay">
-            <span class="gallery-item-label">Barba com navalha</span>
+            <span class="gallery-item-category">Kids</span>
+            <span class="gallery-item-label">Corte Social Infantil</span>
+            <span class="gallery-item-desc">Estilo clássico com todo carinho</span>
           </div>
         </div>
-        <div class="gallery-item">
-          <img src="images/barbershop02.jpg" alt="Corte de cabelo">
+        <div class="gallery-item" data-category="adulto">
+          <img src="images/image02.png" alt="Corte degradê alto com barba desenhada" loading="lazy">
           <div class="gallery-item-overlay">
-            <span class="gallery-item-label">Corte com precisão</span>
+            <span class="gallery-item-category">Adulto</span>
+            <span class="gallery-item-label">Degradê + Barba</span>
+            <span class="gallery-item-desc">High fade e barba alinhada com precisão</span>
           </div>
         </div>
-        <div class="gallery-item">
-          <img src="images/barbershop01.jpg" alt="Detalhe do trabalho" style="object-position: top;">
+        <div class="gallery-item" data-category="kids">
+          <img src="images/image03.png" alt="Bebê sorridente na cadeira temática infantil" loading="lazy">
           <div class="gallery-item-overlay">
-            <span class="gallery-item-label">Atenção ao detalhe</span>
+            <span class="gallery-item-category">Kids</span>
+            <span class="gallery-item-label">Experiência Infantil</span>
+            <span class="gallery-item-desc">Cadeira temática e diversão garantida</span>
           </div>
         </div>
-        <div class="gallery-item">
-          <img src="images/barbershop02.jpg" alt="Barbeiro profissional" style="object-position: bottom;">
+        <div class="gallery-item" data-category="adulto">
+          <img src="images/image04.png" alt="Fade impecável com finalização pompadour" loading="lazy">
           <div class="gallery-item-overlay">
-            <span class="gallery-item-label">Profissionais dedicados</span>
+            <span class="gallery-item-category">Adulto</span>
+            <span class="gallery-item-label">Fade & Pompadour</span>
+            <span class="gallery-item-desc">Precisão técnica no acabamento</span>
           </div>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- LIGHTBOX MODAL -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Visualização da imagem">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Fechar">✕</button>
+    <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Anterior">‹</button>
+    <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Próxima">›</button>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="">
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+  </div>
 
   <!-- CONTATO -->
   <section class="section-wrap" id="contato">
@@ -267,6 +293,103 @@
         heroBg.style.transform = `scale(1.05) translateY(${scrolled * 0.28}px)`;
       }
     }, { passive: true });
+
+    // ===== GALLERY FILTERS =====
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Toggle active state
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.dataset.filter;
+
+        galleryItems.forEach(item => {
+          if (filter === 'all' || item.dataset.category === filter) {
+            item.classList.remove('gallery-hidden');
+            item.classList.add('gallery-visible');
+          } else {
+            item.classList.remove('gallery-visible');
+            item.classList.add('gallery-hidden');
+          }
+        });
+      });
+    });
+
+    // ===== LIGHTBOX =====
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const lightboxClose = document.getElementById('lightbox-close');
+    const lightboxPrev = document.getElementById('lightbox-prev');
+    const lightboxNext = document.getElementById('lightbox-next');
+    let currentIndex = 0;
+
+    function getVisibleItems() {
+      return Array.from(galleryItems).filter(item => !item.classList.contains('gallery-hidden'));
+    }
+
+    function openLightbox(index) {
+      const visible = getVisibleItems();
+      if (index < 0 || index >= visible.length) return;
+      currentIndex = index;
+
+      const item = visible[index];
+      const img = item.querySelector('img');
+      const label = item.querySelector('.gallery-item-label');
+      const desc = item.querySelector('.gallery-item-desc');
+
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightboxCaption.innerHTML = `<strong>${label.textContent}</strong><span>${desc.textContent}</span>`;
+
+      lightbox.classList.add('lightbox-active');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+
+      // Show/hide nav arrows
+      lightboxPrev.style.display = currentIndex > 0 ? 'flex' : 'none';
+      lightboxNext.style.display = currentIndex < visible.length - 1 ? 'flex' : 'none';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('lightbox-active');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    galleryItems.forEach((item, _) => {
+      item.addEventListener('click', () => {
+        const visible = getVisibleItems();
+        const idx = visible.indexOf(item);
+        if (idx !== -1) openLightbox(idx);
+      });
+    });
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    lightboxPrev.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLightbox(currentIndex - 1);
+    });
+
+    lightboxNext.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openLightbox(currentIndex + 1);
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('lightbox-active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') openLightbox(currentIndex - 1);
+      if (e.key === 'ArrowRight') openLightbox(currentIndex + 1);
+    });
   </script>
 
 </body>
