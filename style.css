@@ -550,12 +550,33 @@ nav {
 .service-icon {
   font-size: 2.2rem;
   margin-bottom: 20px;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
   transition: transform var(--transition);
 }
 
-.service-card:hover .service-icon {
+.service-icon img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  transition: transform var(--transition), filter var(--transition);
+  filter: drop-shadow(0 0 0 transparent);
+}
+
+.service-card:hover .service-icon img {
   transform: translateY(-4px) scale(1.12);
+  filter: drop-shadow(0 4px 12px var(--gold-glow));
+}
+
+.service-icon i {
+  display: inline-block;
+  transition: transform var(--transition), color var(--transition);
+}
+
+.service-card:hover .service-icon i {
+  color: var(--gold-light);
 }
 
 .service-card h3 {
@@ -970,12 +991,38 @@ nav {
   justify-content: center;
   margin: 0 auto 20px;
   font-size: 1.4rem;
+  color: var(--gold);
   transition: all var(--transition);
+}
+
+.contact-icon i {
+  transition: color var(--transition), transform var(--transition);
 }
 
 .contact-card:hover .contact-icon {
   border-color: var(--gold);
   background: rgba(207, 168, 81, 0.07);
+}
+
+.contact-card:hover .contact-icon i {
+  transform: scale(1.15);
+}
+
+/* WhatsApp brand color */
+.contact-icon .fa-whatsapp {
+  color: #25D366;
+}
+
+.contact-card:hover .contact-icon .fa-whatsapp {
+  color: #2be47a;
+}
+
+/* Instagram brand color */
+.contact-icon .fa-instagram {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .contact-card h4 {
